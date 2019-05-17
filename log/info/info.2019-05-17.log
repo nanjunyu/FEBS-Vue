@@ -587,3 +587,5 @@ SELECT DEPT_ID,parent_id,dept_name,order_num,create_time,modify_time FROM t_dept
 SELECT COUNT(1) FROM t_dict;
 2019-05-17 13:26:21.582 febs [http-nio-9527-exec-7] INFO  p6spy - 2019-05-17 13:26:21 | ºÄÊ± 1 ms | SQL Óï¾ä£º
 SELECT DICT_ID,keyy,valuee,table_name,field_name FROM t_dict LIMIT 0,10;
+2019-05-17 13:34:41.357 febs [Thread-41] INFO  org.quartz.core.QuartzScheduler - Scheduler MyScheduler_$_DESKTOP-V5IMDG11558070198008 paused.
+2019-05-17 13:34:41.358 febs [Thread-41] INFO  o.s.s.c.ThreadPoolTaskScheduler - Shutting down ExecutorService 'taskScheduler'
