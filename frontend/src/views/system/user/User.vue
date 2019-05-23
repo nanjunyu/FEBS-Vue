@@ -413,6 +413,7 @@ export default {
         ...params
       }).then((r) => {
         let data = r.data
+        console.log(data);
         const pagination = { ...this.pagination }
         pagination.total = data.total
         this.dataSource = data.rows
