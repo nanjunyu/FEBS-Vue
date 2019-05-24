@@ -15,7 +15,16 @@
         <result column="SSEX" jdbcType="CHAR" property="ssex"/>
         <result column="AVATAR" jdbcType="VARCHAR" property="avatar"/>
         <result column="DESCRIPTION" jdbcType="VARCHAR" property="description"/>
+        <result column="sys_name" jdbcType="VARCHAR" property="sysName"/>
+        <result column="sys_domain" jdbcType="VARCHAR" property="sysDomain"/>
+        <result column="sys_leader" jdbcType="VARCHAR" property="sysLeader"/>
     </resultMap>
+
+    <sql id="Base_Column_List">
+    `USER_ID`, `USERNAME`, `PASSWORD`, `DEPT_ID`, `EMAIL`, `MOBILE`, `STATUS`, `CREATE_TIME`,
+    `MODIFY_TIME`, `LAST_LOGIN_TIME`, `SSEX`, `DESCRIPTION`, `AVATAR`, `sys_name`, `sys_domain`,
+    `sys_leader`
+    </sql>
 
     <select id="findUserDetail" resultType="user" parameterType="user">
         SELECT
@@ -23,6 +32,9 @@
         u.username,
         u.password,
         u.email,
+        u.sys_domain as sysDomain,
+        u.sys_name as sysName,
+        u.sys_leader as sysLeader,
         u.mobile,
         u. STATUS,
         u.create_time createTime,

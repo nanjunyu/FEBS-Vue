@@ -105,6 +105,10 @@ public class User implements Serializable {
 
     private transient String id;
 
+    private  String sysName;
+    private String sysDomain;
+    private String sysLeader;
+
     /**
      * shiro-redis v3.1.0 必须要有 getAuthCacheKey()或者 getId()方法
      * # Principal id field name. The field which you can get unique id to identify this principal.
