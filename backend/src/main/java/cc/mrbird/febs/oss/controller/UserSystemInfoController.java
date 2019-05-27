@@ -3,6 +3,7 @@ package cc.mrbird.febs.oss.controller;
 
 import cc.mrbird.febs.common.controller.BaseController;
 import cc.mrbird.febs.common.domain.QueryRequest;
+import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.oss.domain.UploadInfo;
 import cc.mrbird.febs.oss.domain.UserSystemInfo;
 import cc.mrbird.febs.oss.service.UserSystemInfoService;
@@ -29,6 +30,9 @@ public class UserSystemInfoController extends BaseController {
 
     @Autowired
     UserSystemInfoService userSystemInfoService;
+
+    private String message;
+
     /**
      * @Author: nanJunYu
      * @Description:上传附件
@@ -37,8 +41,15 @@ public class UserSystemInfoController extends BaseController {
      * @return:
      */
     @PutMapping("upload")
-    public UploadInfo upload(@Valid UserSystemInfo userSystemInfo, @RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
-        UploadInfo uploadInfo = userSystemInfoService.uploadFile(file,userSystemInfo,request);
+    public UploadInfo upload(@Valid UserSystemInfo userSystemInfo, @RequestParam("file") MultipartFile file, HttpServletRequest request) throws FebsException {
+        UploadInfo uploadInfo = null;
+        try {
+            uploadInfo = userSystemInfoService.uploadFile(file,userSystemInfo,request);
+        } catch (Exception e) {
+            message = "上传附件失败";
+            log.error(message, e);
+            throw new FebsException(message);
+        }
         return uploadInfo;
 
     }

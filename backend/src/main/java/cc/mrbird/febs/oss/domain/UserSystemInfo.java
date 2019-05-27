@@ -1,8 +1,6 @@
 package cc.mrbird.febs.oss.domain;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -15,7 +13,6 @@ import java.time.LocalDateTime;
  * @author Frank
  */
 @Data
-@TableName("user_system_info")
 public class UserSystemInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -70,11 +67,6 @@ public class UserSystemInfo implements Serializable {
     private String fastPath;
 
     /**
-     * 上传路径，用户选择的上传地址
-     */
-    private String uploadPath;
-
-    /**
      * 上传完成之后生成的文件id 字符串
      */
     private String fileId;
@@ -98,6 +90,11 @@ public class UserSystemInfo implements Serializable {
      * 文件的md5值
      */
     private String md5;
+
+    /**
+     * 确定新增1
+     */
+    private transient int confirm;
 
 
     /*@NotBlank(message = "{required}")

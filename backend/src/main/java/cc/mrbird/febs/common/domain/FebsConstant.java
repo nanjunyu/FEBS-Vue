@@ -16,6 +16,9 @@ public class FebsConstant {
     // token缓存前缀
     public static final String TOKEN_CACHE_PREFIX = "febs.cache.token.";
 
+
+    // 附件缓存前缀
+    public static final String OSS_CACHE_PREFIX = "oss.cache.upload:";
     // 存储在线用户的 zset前缀
     public static final String ACTIVE_USERS_ZSET_PREFIX = "febs.user.active";
 

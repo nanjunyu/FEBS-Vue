@@ -12,7 +12,6 @@
         <result column="file_size" jdbcType="DECIMAL" property="fileSize" />
         <result column="status" jdbcType="CHAR" property="status" />
         <result column="fast_path" jdbcType="VARCHAR" property="fastPath" />
-        <result column="upload_path" jdbcType="VARCHAR" property="uploadPath" />
         <result column="file_id" jdbcType="VARCHAR" property="fileId" />
         <result column="version_number" jdbcType="DECIMAL" property="versionNumber" />
         <result column="author" jdbcType="VARCHAR" property="author" />
@@ -22,7 +21,7 @@
 
     <sql id="Base_Column_List">
     id, user_id, create_time, update_time, file_name, mime_type, suffix, file_size, status,
-    fast_path, upload_path, file_id, version_number, author, pv, md5
+    fast_path, file_id, version_number, author, pv, md5
   </sql>
 
 </mapper>

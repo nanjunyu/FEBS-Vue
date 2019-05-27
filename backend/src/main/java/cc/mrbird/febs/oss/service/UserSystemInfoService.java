@@ -15,7 +15,17 @@ import javax.servlet.http.HttpServletRequest;
  * @author Frank
  */
 public interface UserSystemInfoService extends IService<UserSystemInfo> {
-    UploadInfo uploadFile(MultipartFile files, UserSystemInfo userSystemInfo, HttpServletRequest request) throws FebsException;
+    UploadInfo uploadFile(MultipartFile files, UserSystemInfo userSystemInfo, HttpServletRequest request) throws Exception;
 
     IPage<UserSystemInfo> findSysInfoPage(User user, QueryRequest request);
+
+    /**
+    *  保存上传附件信息到数据库和redis
+    *
+    * @Author Frank
+    * @Date Create in  2019/5/27 10:24
+    * @param
+    * @return
+    */
+    void saveUpload(UserSystemInfo userSystemInfo) throws Exception;
 }
