@@ -7,6 +7,7 @@ import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.common.utils.MD5Util;
 import cc.mrbird.febs.system.domain.User;
 import cc.mrbird.febs.system.domain.UserConfig;
+import cc.mrbird.febs.system.domain.UserInfo;
 import cc.mrbird.febs.system.service.UserConfigService;
 import cc.mrbird.febs.system.service.UserService;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
@@ -99,6 +100,17 @@ public class UserController extends BaseController {
             this.userService.updateProfile(user);
         } catch (Exception e) {
             message = "修改个人信息失败";
+            log.error(message, e);
+            throw new FebsException(message);
+        }
+    }
+
+    @PutMapping("sysInfo")
+    public void updateSysInfo(@Valid UserInfo userInfo) throws FebsException {
+        try {
+            this.userService.updateSysInfo(userInfo);
+        } catch (Exception e) {
+            message = "修改系统信息失败";
             log.error(message, e);
             throw new FebsException(message);
         }

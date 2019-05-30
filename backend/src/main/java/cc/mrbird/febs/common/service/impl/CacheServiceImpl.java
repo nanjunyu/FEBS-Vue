@@ -3,6 +3,7 @@ package cc.mrbird.febs.common.service.impl;
 import cc.mrbird.febs.common.domain.FebsConstant;
 import cc.mrbird.febs.common.service.CacheService;
 import cc.mrbird.febs.common.service.RedisService;
+import cc.mrbird.febs.oss.domain.UserSystemInfo;
 import cc.mrbird.febs.system.dao.UserMapper;
 import cc.mrbird.febs.system.domain.Menu;
 import cc.mrbird.febs.system.domain.Role;
@@ -152,5 +153,18 @@ public class CacheServiceImpl implements CacheService {
     @Override
     public void deleteUserConfigs(String userId) throws Exception {
         redisService.del(FebsConstant.USER_CONFIG_CACHE_PREFIX + userId);
+    }
+
+    @Override
+    public void saveUpload(UserSystemInfo userSystemInfo) throws Exception {
+        String fileId = userSystemInfo.getFileId();
+        this.deleteUpload(fileId);
+        redisService.set(FebsConstant.OSS_CACHE_PREFIX + fileId, mapper.writeValueAsString(userSystemInfo));
+
+    }
+
+    @Override
+    public void deleteUpload(String fileId) throws Exception {
+        redisService.del(FebsConstant.OSS_CACHE_PREFIX + fileId);
     }
 }

@@ -1,5 +1,6 @@
 package cc.mrbird.febs.common.service;
 
+import cc.mrbird.febs.oss.domain.UserSystemInfo;
 import cc.mrbird.febs.system.domain.Menu;
 import cc.mrbird.febs.system.domain.Role;
 import cc.mrbird.febs.system.domain.User;
@@ -110,4 +111,16 @@ public interface CacheService {
      */
     void deleteUserConfigs(String userId) throws Exception;
 
+
+    /**
+    *
+    *  缓存上传附件信息
+    * @Author Frank
+    * @Date Create in  2019/5/27 10:27
+    * @param
+    * @return
+    */
+    void saveUpload(UserSystemInfo userSystemInfo) throws Exception;
+
+    void deleteUpload(String  fileId) throws Exception ;
 }

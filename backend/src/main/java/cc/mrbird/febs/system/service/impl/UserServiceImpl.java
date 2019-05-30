@@ -8,6 +8,7 @@ import cc.mrbird.febs.common.utils.MD5Util;
 import cc.mrbird.febs.system.dao.UserMapper;
 import cc.mrbird.febs.system.dao.UserRoleMapper;
 import cc.mrbird.febs.system.domain.User;
+import cc.mrbird.febs.system.domain.UserInfo;
 import cc.mrbird.febs.system.domain.UserRole;
 import cc.mrbird.febs.system.manager.UserManager;
 import cc.mrbird.febs.system.service.UserConfigService;
@@ -198,6 +199,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             cacheService.saveUser(username);
         }
 
+    }
+
+    @Override
+    public void updateSysInfo(UserInfo userInfo) throws Exception {
+        User user=new User();
+        String userName=getById(userInfo.getUserId()).getUsername();
+        user.setModifyTime(new Date());
+        user.setSysDomain(userInfo.getSysDomain());
+        user.setUserId(userInfo.getUserId());
+        user.setSysLeader(userInfo.getSysLeader());
+        user.setSysName(userInfo.getSysName());
+        user.setMobile(userInfo.getMobile());
+        updateById(user);
+        // 重新缓存用户信息
+        cacheService.saveUser(userName);
     }
 
     private void setUserRoles(User user, String[] roles) {
