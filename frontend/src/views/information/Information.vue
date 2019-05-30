@@ -89,12 +89,11 @@
               this.loading = true
               let user = this.form.getFieldsValue()
               user.userId = this.userId
-              console.log(user);
               this.$put('user/sysInfo', {
                 ...user
               }).then((r) => {
                 this.loading = false
-                alert('成功')
+                location.reload();
               }).catch(() => {
                 this.loading = false
               })
@@ -110,10 +109,9 @@
       },
     },
     mounted(){
-      console.log(this.form);
-      this.$get('user/chenjian', {}).then((r) => {
+      let userName = JSON.parse(localStorage.getItem('USER')).username;
+      this.$get('user/'+userName, {}).then((r) => {
         let data = r.data
-        console.log(data);
         this.form.setFieldsValue(data)
         this.userId = data.userId;
         // 数据加载完毕，关闭loading

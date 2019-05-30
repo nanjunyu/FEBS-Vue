@@ -81,6 +81,7 @@ const request = {
   post (url, params) {
     return FEBS_REQUEST.post(url, params, {
       transformRequest: [(params) => {
+        console.log(params);
         let result = ''
         Object.keys(params).forEach((key) => {
           if (!Object.is(params[key], undefined) && !Object.is(params[key], null)) {
@@ -206,7 +207,7 @@ const request = {
     })
   },
   upload (url, params) {
-    return FEBS_REQUEST.post(url, params, {
+    return FEBS_REQUEST.put(url, params, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
