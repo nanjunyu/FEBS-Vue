@@ -32,7 +32,7 @@
     </div>
     <div>
       <div class="operator">
-        <a-button type="primary" ghost @click="add" v-hasPermission="'user:add'">新增</a-button>
+        <a-button type="primary" ghost @click="add" v-hasPermission="'doc:add'">新增</a-button>
         <!--<a-button @click="batchDelete" v-hasPermission="'user:delete'">删除</a-button>-->
       </div>
       <!-- 表格区域 -->
@@ -53,7 +53,7 @@
           </a-popover>
         </template>
         <template slot="operation" slot-scope="text, record">
-          <a-icon v-hasPermission="'user:update'" type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修改用户"></a-icon>
+          <a-icon v-hasPermission="'doc:edit'" type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修改文件"></a-icon>
           &nbsp;
           <!--<a-icon v-hasPermission="'user:view'" type="eye" theme="twoTone" twoToneColor="#42b983" @click="view(record)" title="查看"></a-icon>-->
           <a-badge v-hasNoPermission="'user:update','user:view'" status="warning" text="无权限"></a-badge>
@@ -180,7 +180,7 @@
       },
       handleUserEditSuccess () {
         this.userEdit.visiable = false
-        this.$message.success('修改用户成功')
+        this.$message.success('修改文件成功')
         this.search()
       },
       handleUserInfoClose () {
@@ -255,6 +255,7 @@
           params.pageSize = this.pagination.defaultPageSize
           params.pageNum = this.pagination.defaultCurrent
         }
+        params.userId = JSON.parse(localStorage.getItem('USER')).userId;
         this.$get('/oss/page', {
           ...params
         }).then((r) => {
