@@ -30,6 +30,17 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setFilters(filters);
 
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+
+        //swagger配置放行
+        filterChainDefinitionMap.put("/swagger-ui.html","anon");
+        filterChainDefinitionMap.put("/swagger/**","anon");
+        filterChainDefinitionMap.put("/webjars/**","anon");
+        filterChainDefinitionMap.put("/swagger-resources/**","anon");
+        filterChainDefinitionMap.put("/v2/**","anon");
+        //静态资源放行
+        filterChainDefinitionMap.put("/**/*.html","anon");
+        filterChainDefinitionMap.put("/**/*.jpg","anon");
+        filterChainDefinitionMap.put("/**/*.png","anon");
         // 所有请求都要经过 jwt过滤器
         filterChainDefinitionMap.put("/**", "jwt");
 

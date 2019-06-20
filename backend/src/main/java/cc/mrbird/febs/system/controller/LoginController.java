@@ -19,6 +19,10 @@ import cc.mrbird.febs.system.service.LoginLogService;
 import cc.mrbird.febs.system.service.UserService;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.lionsoul.ip2region.DbSearcher;
@@ -33,6 +37,7 @@ import java.util.*;
 
 @Validated
 @RestController
+@Api(tags = "登录相关API")
 public class LoginController {
 
     @Autowired
@@ -51,7 +56,12 @@ public class LoginController {
     private ObjectMapper mapper;
 
     @PostMapping("/login")
+    @ApiOperation(value = "用户登录", notes = "用户登录")
     @Limit(key = "login", period = 60, count = 20, name = "登录接口", prefix = "limit")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query", dataType = "String"),
+            @ApiImplicitParam(name = "password", value = "密码", required = true, paramType = "query", dataType = "String")
+    })
     public FebsResponse login(
             @NotBlank(message = "{required}") String username,
             @NotBlank(message = "{required}") String password, HttpServletRequest request) throws Exception {

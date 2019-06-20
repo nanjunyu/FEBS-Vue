@@ -1,5 +1,6 @@
 package cc.mrbird.febs.oss.domain;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -13,11 +14,13 @@ import java.time.LocalDateTime;
  * @author Frank
  */
 @Data
-public class UserSystemInfo implements Serializable {
+@TableName("t_file_current")
+public class FileCurrent implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private Long id;
+
 
     /**
      * 用户id
@@ -91,12 +94,5 @@ public class UserSystemInfo implements Serializable {
      */
     private String md5;
 
-    /**
-     * 确定新增1
-     */
-    private transient int confirm;
 
-
-    /*@NotBlank(message = "{required}")
-    private MultipartFile file;*/
 }

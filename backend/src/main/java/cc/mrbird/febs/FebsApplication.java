@@ -9,11 +9,13 @@ import org.springframework.jmx.support.RegistrationPolicy;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableScheduling
 @EnableAsync
+@EnableSwagger2
 @Import(FdfsClientConfig.class)
 /**
  * 解决jmx重复注册bean的问题
