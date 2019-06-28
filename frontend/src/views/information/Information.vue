@@ -93,6 +93,7 @@
                 ...user
               }).then((r) => {
                 this.loading = false
+                alert('修改成功！')
                 location.reload();
               }).catch(() => {
                 this.loading = false

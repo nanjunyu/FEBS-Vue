@@ -19,6 +19,7 @@
       </a-form-item>
       <a-form-item label='密码' v-bind="formItemLayout">
         <a-tooltip title='新用户默认密码为 1234qwer'>
+          <!--<a-input type='password' readOnly :value="defaultPassword"/>-->
           <a-input type='password' readOnly :value="defaultPassword"/>
         </a-tooltip>
       </a-form-item>

@@ -13,17 +13,17 @@
                    v-bind="formItemLayout"
                    :validateStatus="validateStatus"
                    :help="help">
-        <a-input v-model="fileName"/>
+        <a-input v-model="fileName" @blur="checkFile"/>
       </a-form-item>
-      <a-form-item label='文件访问地址' v-bind="formItemLayout">
-        <a-upload name="file" :fileList="fileList" :beforeUpload="beforeUpload">
+      <a-form-item label='文件上传' v-bind="formItemLayout">
+        <a-upload name="file" :fileList="fileList" :remove="handleRemove" :disabled="fileList.length === 1" :beforeUpload="beforeUpload">
           <a-button>
             <a-icon type="upload" /> 上传
           </a-button>
         </a-upload>
       </a-form-item>
       <a-form-item label="是否最新版本" v-bind="formItemLayout">
-        <a-checkbox @change="onChange"></a-checkbox>
+        <a-checkbox @change="onChange" :checked="checked"></a-checkbox>
       </a-form-item>
     </a-form>
     <div class="drawer-bootom-button">
@@ -40,7 +40,7 @@
     wrapperCol: { span: 16 }
   }
   export default {
-    name: 'DocAdd',
+    name: 'OssAdd',
     props: {
       userAddVisiable: {
         default: false
@@ -56,24 +56,65 @@
         validateStatus: '',
         help: '',
         fileList:[],
-        status:''
+        status:1,
+        checked:false
       }
     },
     methods: {
+      checkFile(){
+        let that = this
+        if(this.fileName){
+          let params = {};
+          params.fileName = this.fileName;
+          this.$get('/oss/check', params).then((r) => {
+            if(r.data){
+              this.$confirm({
+                title: '此文件名已存在，请重新输入',
+                centered: true,
+                onOk () {
+                  that.$emit('succuss')
+                  that.fileName = ''
+                }
+              })
+            }
+          }).catch((r) => {
+
+          })
+        }else{
+          this.$confirm({
+            title:'文件不能为空',
+            centered: true,
+            onOk () {
+              that.$emit('succuss')
+            }
+          })
+        }
+      },
+      handleRemove (file) {
+        if (this.uploading) {
+          this.$message.warning('文件导入中，请勿删除')
+          return
+        }
+        const index = this.fileList.indexOf(file)
+        const newFileList = this.fileList.slice()
+        newFileList.splice(index, 1)
+        this.fileList = newFileList
+      },
       onChange(e){
-        let checked = '${e.target.checked}'
-        if(checked){
+        if(this.checked){
           this.status = 1
+          this.checked = false
         }else{
           this.status = 0
+          this.checked = true
         }
       },
       reset () {
-        this.validateStatus = ''
-        this.help = ''
         this.fileName = ''
-        this.loading = false
-        this.form.resetFields()
+        this.status = 1
+        this.checked = false
+        this.fileList = []
+
       },
       onClose () {
         this.reset()
@@ -85,17 +126,25 @@
       },
       handleSubmit () {
         const { fileList } = this
+        let that = this
+        if(this.fileName == ''){
+          alert('请输入文件名称');
+          return false;
+        }
+        if(fileList.length == 0){
+          alert('请上传文件');
+          return false;
+        }
         let formData = new FormData()
         formData.append('fileName',this.fileName);
         formData.append('file',fileList[0]);
         formData.append('status',this.status);
         formData.append('userId',JSON.parse(localStorage.getItem('USER')).userId);
-        formData.append('confirm','1');
+        formData.append('versionNumber','1.0');
         this.$upload('/oss/upload', formData).then((r) => {
-          this.reset()
-          this.$emit('success')
+          that.reset()
+          that.$emit('success')
         }).catch((r) => {
-          console.error(r)
           this.uploading = false
           this.fileList = []
         })

@@ -5,9 +5,21 @@ import store from '../store'
 import db from 'utils/localstorage'
 moment.locale('zh-cn')
 
+let apiUrl = ''
+let HOST = process.env.HOST;
+if(HOST === 'prod'){
+  apiUrl = 'http://www.invs.com:9527'
+}
+if(HOST === 'test'){
+  apiUrl = 'http://10.137.35.134:9527'
+}
+if(HOST === 'dev'){
+  apiUrl = 'http://127.0.0.1:9527'
+}
 // 统一配置
 let FEBS_REQUEST = axios.create({
-  baseURL: 'http://10.137.35.134:9527/',
+  // baseURL: 'http://10.137.35.134:9527/',
+  baseURL: apiUrl,
   responseType: 'json',
   validateStatus (status) {
     // 200 外的状态码都认定为失败
@@ -207,6 +219,13 @@ const request = {
     })
   },
   upload (url, params) {
+    return FEBS_REQUEST.post(url, params, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+  },
+  upload2 (url, params) {
     return FEBS_REQUEST.put(url, params, {
       headers: {
         'Content-Type': 'multipart/form-data'

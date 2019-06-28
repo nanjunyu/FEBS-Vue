@@ -1,39 +1,10 @@
 <template>
   <a-card :bordered="false" class="card-area">
     <div :class="advanced ? 'search' : null">
-      <!-- 搜索区域 -->
-      <!--<a-form layout="horizontal">-->
-        <!--<a-row >-->
-          <!--<div :class="advanced ? null: 'fold'">-->
-            <!--<a-col :md="12" :sm="24" >-->
-              <!--<a-form-item-->
-                <!--label="文件名称"-->
-                <!--:labelCol="{span: 4}"-->
-                <!--:wrapperCol="{span: 18, offset: 2}">-->
-                <!--<a-input v-model="queryParams.username"/>-->
-              <!--</a-form-item>-->
-            <!--</a-col>-->
-            <!--<template v-if="advanced">-->
-              <!--<a-col :md="12" :sm="24" >-->
-                <!--<a-form-item-->
-                  <!--label="创建时间"-->
-                  <!--:labelCol="{span: 4}"-->
-                  <!--:wrapperCol="{span: 18, offset: 2}">-->
-                  <!--<range-date @change="handleDateChange" ref="createTime"></range-date>-->
-                <!--</a-form-item>-->
-              <!--</a-col>-->
-            <!--</template>-->
-          <!--</div>-->
-          <!--<span style="float: right; margin-top: 3px;">-->
-            <!--<a-button type="primary" @click="search">查询</a-button>-->
-          <!--</span>-->
-        <!--</a-row>-->
-      <!--</a-form>-->
     </div>
     <div>
       <div class="operator">
-        <a-button type="primary" ghost @click="add" v-hasPermission="'doc:add'">新增</a-button>
-        <!--<a-button @click="batchDelete" v-hasPermission="'user:delete'">删除</a-button>-->
+        <a-button type="primary" ghost @click="add" v-hasPermission="'oss:add'">新增</a-button>
       </div>
       <!-- 表格区域 -->
       <a-table ref="TableInfo"
@@ -41,7 +12,6 @@
                :dataSource="dataSource"
                :pagination="pagination"
                :loading="loading"
-               :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
                :scroll="{ x: 900 }"
                @change="handleTableChange">
         <template slot="email" slot-scope="text, record">
@@ -52,11 +22,15 @@
             <p style="width: 150px;margin-bottom: 0">{{text}}</p>
           </a-popover>
         </template>
-        <template slot="operation" slot-scope="text, record">
-          <a-icon v-hasPermission="'doc:edit'" type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修改文件"></a-icon>
-          &nbsp;
-          <!--<a-icon v-hasPermission="'user:view'" type="eye" theme="twoTone" twoToneColor="#42b983" @click="view(record)" title="查看"></a-icon>-->
-          <a-badge v-hasNoPermission="'user:update','user:view'" status="warning" text="无权限"></a-badge>
+        <!--<template slot="operation" slot-scope="text, record">-->
+          <!--<a-icon v-hasPermission="'oss:edit'" type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修改文件"></a-icon>-->
+          <!--&nbsp;-->
+          <!--&lt;!&ndash;<a-icon v-hasPermission="'user:view'" type="eye" theme="twoTone" twoToneColor="#42b983" @click="view(record)" title="查看"></a-icon>&ndash;&gt;-->
+          <!--<a-badge v-hasNoPermission="'oss:update','oss:view'" status="warning" text="无权限"></a-badge>-->
+        <!--</template>-->
+        <template slot="action" slot-scope="text, record">
+          <!--<a href="/#/oss/ossDetail">编辑</a>-->
+          <a href="javascript:void(0)" @click="goToSDetails($event,text.fileName,text.fastPath,text.versionNumber,text.id)">查看</a>
         </template>
       </a-table>
     </div>
@@ -67,18 +41,18 @@
       <!--@close="handleUserInfoClose">-->
     <!--</doc-info>-->
     <!-- 新增用户 -->
-    <doc-add
+    <oss-add
       @close="handleUserAddClose"
       @success="handleUserAddSuccess"
       :userAddVisiable="userAdd.visiable">
-    </doc-add>
+    </oss-add>
     <!-- 修改用户 -->
-    <doc-edit
+    <oss-edit
       ref="userEdit"
       @close="handleUserEditClose"
       @success="handleUserEditSuccess"
       :userEditVisiable="userEdit.visiable">
-    </doc-edit>
+    </oss-edit>
   </a-card>
 </template>
 
@@ -86,14 +60,15 @@
   // import DocInfo from './DocInfo'
   // import DeptInputTree from '../system/dept/DeptInputTree'
   // import RangeDate from '@/components/datetime/RangeDate'
-  import DocAdd from './DocAdd'
-  import DocEdit from './DocEdit'
+  import OssAdd from './OssAdd'
+  import OssEdit from './OssEdit'
 
   export default {
-    name: 'Doc',
-    components: {DocAdd, DocEdit},
+    name: 'Oss',
+    components: {OssAdd, OssEdit},
     data () {
       return {
+        fastPath:'',
         advanced: false,
         userInfo: {
           visiable: false,
@@ -128,11 +103,17 @@
         sortedInfo = sortedInfo || {}
         filteredInfo = filteredInfo || {}
         return [{
+          title: '编号',
+          dataIndex: 'id'
+        },{
           title: '文件名称',
           dataIndex: 'fileName'
         },{
-          title: '当前在用版本',
+          title: '当前是否在用',
           dataIndex: 'status'
+        },{
+          title: '当前版本',
+          dataIndex: 'versionNumber'
         },{
           title: '上传时间',
           dataIndex: 'updateTime'
@@ -144,8 +125,8 @@
           dataIndex: 'pv'
         }, {
           title: '操作',
-          dataIndex: 'operation',
-          scopedSlots: { customRender: 'operation' }
+          key:'action',
+          scopedSlots: { customRender: 'action' }
         }]
       }
     },
@@ -153,6 +134,18 @@
       this.fetch()
     },
     methods: {
+      goToSDetails:function (e,fileName,fileUrl,versionNumber,id) {
+
+        this.$router.push({
+          path:'/oss/ossDetail',
+          query:{
+            fileName:fileName,
+            fileUrl:fileUrl,
+            versionNumber:versionNumber,
+            id:id
+          }
+        })
+      },
       onSelectChange (selectedRowKeys) {
         this.selectedRowKeys = selectedRowKeys
       },
@@ -186,32 +179,6 @@
       handleUserInfoClose () {
         this.userInfo.visiable = false
       },
-      // batchDelete () {
-      //   if (!this.selectedRowKeys.length) {
-      //     this.$message.warning('请选择需要删除的记录')
-      //     return
-      //   }
-      //   let that = this
-      //   this.$confirm({
-      //     title: '确定删除所选中的记录?',
-      //     content: '当您点击确定按钮后，这些记录将会被彻底删除',
-      //     centered: true,
-      //     onOk () {
-      //       let userIds = []
-      //       for (let key of that.selectedRowKeys) {
-      //         userIds.push(that.dataSource[key].userId)
-      //       }
-      //       that.$delete('user/' + userIds.join(',')).then(() => {
-      //         that.$message.success('删除成功')
-      //         that.selectedRowKeys = []
-      //         that.search()
-      //       })
-      //     },
-      //     onCancel () {
-      //       that.selectedRowKeys = []
-      //     }
-      //   })
-      // },
       search () {
         let {sortedInfo, filteredInfo} = this
         let sortField, sortOrder
@@ -259,8 +226,8 @@
         this.$get('/oss/page', {
           ...params
         }).then((r) => {
+          console.log(r);
           let data = r.data
-          console.log(data);
           for(let i = 0;i < data.rows.length;i++){
             if(data.rows[i].status == 0){
               data.rows[i].status = '是'
@@ -272,9 +239,15 @@
             }else{
               data.rows[i].updateTime = data.rows[i].createTime.split('T')[0]+' '+data.rows[i].createTime.split('T')[1]
             }
+            if((/(^[1-9]\d*$)/.test(data.rows[i].versionNumber))){
+              data.rows[i].versionNumber = data.rows[i].versionNumber + '.0'
+            }
           }
           const pagination = { ...this.pagination }
           pagination.total = data.total
+          for(let i = 0;i < data.rows.length;i++){
+            data.rows[i].index = i;
+          }
           this.dataSource = data.rows
           this.pagination = pagination
           // 数据加载完毕，关闭loading
@@ -285,5 +258,5 @@
   }
 </script>
 <style lang="less" scoped>
-  @import "../../../static/less/Common";
+  @import "../../../../static/less/Common";
 </style>
