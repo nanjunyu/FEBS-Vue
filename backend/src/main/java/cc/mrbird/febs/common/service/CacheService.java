@@ -1,6 +1,7 @@
 package cc.mrbird.febs.common.service;
 
-import cc.mrbird.febs.oss.domain.UserSystemInfo;
+import cc.mrbird.febs.oss.domain.FileCurrent;
+import cc.mrbird.febs.oss.domain.FileHistory;
 import cc.mrbird.febs.system.domain.Menu;
 import cc.mrbird.febs.system.domain.Role;
 import cc.mrbird.febs.system.domain.User;
@@ -120,7 +121,7 @@ public interface CacheService {
     * @param
     * @return
     */
-    void saveUpload(UserSystemInfo userSystemInfo) throws Exception;
+    void saveUpload(FileCurrent fileCurrent) throws Exception;
 
     void deleteUpload(String  fileId) throws Exception ;
 }

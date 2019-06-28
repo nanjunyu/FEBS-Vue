@@ -5,6 +5,7 @@ import cc.mrbird.febs.system.domain.UserRole;
 import cc.mrbird.febs.system.service.UserRoleService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +33,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
 	@Override
 	public List<String> findUserIdsByRoleId(String[] roleIds) {
 
-		List<UserRole> list = baseMapper.selectList(new LambdaQueryWrapper<UserRole>().in(UserRole::getRoleId, (Object) roleIds));
+		List<UserRole> list = baseMapper.selectList(new LambdaQueryWrapper<UserRole>().in(UserRole::getRoleId, StringUtils.join(roleIds, ",")));
 		return list.stream().map(userRole -> String.valueOf(userRole.getUserId())).collect(Collectors.toList());
 	}
 
