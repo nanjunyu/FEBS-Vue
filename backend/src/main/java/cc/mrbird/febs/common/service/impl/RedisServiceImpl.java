@@ -120,6 +120,18 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
+    public Long incr(String key, long liveTime) throws RedisConnectException {
+        Long num = this.excuteByJedis(j -> j.incr(key.toLowerCase()));
+        this.pexpire(key, liveTime);
+        return num;
+    }
+
+    @Override
+    public Long incr(String key) throws RedisConnectException {
+        return this.excuteByJedis(j -> j.incr(key.toLowerCase()));
+    }
+
+    @Override
     public String set(String key, String value, Long milliscends) throws RedisConnectException {
         String result = this.set(key.toLowerCase(), value);
         this.pexpire(key, milliscends);
@@ -164,6 +176,26 @@ public class RedisServiceImpl implements RedisService {
     @Override
     public Long zrem(String key, String... members) throws RedisConnectException {
         return this.excuteByJedis(j -> j.zrem(key, members));
+    }
+
+    @Override
+    public Long hset(String key, String field, String value) throws RedisConnectException {
+        return this.excuteByJedis(j -> j.hset(key, field, value));
+    }
+
+    @Override
+    public String hget(String key, String field) throws RedisConnectException {
+        return this.excuteByJedis(j -> j.hget(key, field));
+    }
+
+    @Override
+    public Map<String, String> hgetAll(String key) throws RedisConnectException {
+        return this.excuteByJedis(j -> j.hgetAll(key));
+    }
+
+    @Override
+    public void hdel(String key, String fields) throws RedisConnectException {
+        this.excuteByJedis(j -> j.hdel(key,fields));
     }
 
 }

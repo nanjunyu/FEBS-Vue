@@ -43,4 +43,36 @@
         </if>
     </select>
 
+
+    <select id="getMaxVersion" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from t_file_history where parent_id =#{parentId}
+        order by version_number desc limit 1
+    </select>
+
+
+    <select id="sumPvByParentId" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        select sum(t.pv)
+        from t_file_history t where parent_id =#{parentId}
+    </select>
+
+
+    <select id="sysFileInfo" resultType="java.util.Map" parameterType="java.lang.Long">
+        select count(*) as totalNum,sum(s.file_size) as totalSize from (
+        select t.user_id,t.id,t.file_id,t.file_size from t_file_history t
+        where t.user_id=#{userId} group by t.file_id) s
+    </select>
+
+
+    <select id="filePvInfo" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select   <include refid="Base_Column_List"/>
+        from t_file_history t
+        where t.user_id=#{userId}
+        and t.create_time between #{startTime} and #{endTime}
+        <if test="fileName != null and fileName != ''">
+            and t.file_name like CONCAT(CONCAT('%', #{channelId}),'%')
+        </if>
+        GROUP BY t.file_id
+    </select>
 </mapper>

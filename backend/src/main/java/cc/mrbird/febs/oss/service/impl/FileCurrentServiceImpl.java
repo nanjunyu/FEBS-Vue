@@ -1,6 +1,8 @@
 package cc.mrbird.febs.oss.service.impl;
 
 import cc.mrbird.febs.common.domain.QueryRequest;
+import cc.mrbird.febs.common.fastdfs.FastDfsConstant;
+import cc.mrbird.febs.oss.common.OssConstant;
 import cc.mrbird.febs.oss.dao.FileCurrentMapper;
 import cc.mrbird.febs.oss.dao.FileHistoryMapper;
 import cc.mrbird.febs.oss.domain.FileCurrent;
@@ -28,6 +30,10 @@ public class FileCurrentServiceImpl extends ServiceImpl<FileCurrentMapper, FileC
 
     @Autowired
     FileCurrentMapper fileCurrentMapper;
+
+    @Autowired
+    FastDfsConstant fastDfsConstant;
+
     @Override
     public IPage<FileCurrent> findFileCurrentPage(User user, QueryRequest request) {
         try {
@@ -41,9 +47,34 @@ public class FileCurrentServiceImpl extends ServiceImpl<FileCurrentMapper, FileC
             map.put("pageStart", pageStart);
             map.put("pageSize", pageSize);
             map.put("userId", user.getUserId());
-            List<FileCurrent> fileCurrentIPage = fileCurrentMapper.findFileCurrentPage(map);
+            map.put("status", OssConstant.FILE_STATUS_CURRENT);
+            List<FileCurrent> fileCurrentList = fileCurrentMapper.findFileCurrentPage(map);
             Page<FileCurrent> page = new Page<>();
-            page.setRecords(fileCurrentIPage);
+            page.setRecords(fileCurrentList);
+            page.setTotal(fileCurrentMapper.findFileCurrentCount(map));
+            return page;
+        } catch (Exception e) {
+            log.error("获取附件列表失败", e);
+            return null;
+        }
+    }
+
+    @Override
+    public IPage<FileCurrent> findFileCurrentPage(QueryRequest request) {
+        try {
+            Map<String, Object> map = new HashMap<>(16);
+            int pageSize = request.getPageSize();
+            int pageNum = request.getPageNum();
+            int pageStart = (pageNum - 1) * pageSize;
+            if (pageStart < 0) {
+                pageStart = 0;
+            }
+            map.put("pageStart", pageStart);
+            map.put("pageSize", pageSize);
+            map.put("status", OssConstant.FILE_STATUS_CURRENT);
+            List<FileCurrent> fileCurrentList = fileCurrentMapper.findFileCurrentPage(map);
+            Page<FileCurrent> page = new Page<>();
+            page.setRecords(fileCurrentList);
             page.setTotal(fileCurrentMapper.findFileCurrentCount(map));
             return page;
         } catch (Exception e) {

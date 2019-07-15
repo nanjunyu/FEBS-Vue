@@ -1,13 +1,13 @@
 package cc.mrbird.febs.common.service;
 
-import cc.mrbird.febs.oss.domain.FileCurrent;
-import cc.mrbird.febs.oss.domain.FileHistory;
+import cc.mrbird.febs.common.exception.RedisConnectException;
 import cc.mrbird.febs.system.domain.Menu;
 import cc.mrbird.febs.system.domain.Role;
 import cc.mrbird.febs.system.domain.User;
 import cc.mrbird.febs.system.domain.UserConfig;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CacheService {
 
@@ -115,13 +115,27 @@ public interface CacheService {
 
     /**
     *
-    *  缓存上传附件信息
+    *  缓存上传到fastDfs的附件信息
     * @Author Frank
     * @Date Create in  2019/5/27 10:27
-    * @param
+    * @param fileId 附件id
+    * @param fastPath fastDfs保存的地址
     * @return
     */
-    void saveUpload(FileCurrent fileCurrent) throws Exception;
+    void saveFastDfsUrl(String fileId,String fastPath) throws Exception;
 
-    void deleteUpload(String  fileId) throws Exception ;
+    void deleteFastDfsUrl(String fileId) throws Exception;
+
+    Long setFastDfsPv(String fileId,String value) throws RedisConnectException;
+
+    String  getFastDfsUrlByFileId(String fileId) throws Exception;
+
+    Long increaseFilePv(String fileId) throws RedisConnectException;
+
+    Map<String, String> getAllFastPv() throws RedisConnectException;
+
+    String getFastDfsPvByFileId(String fileId) throws RedisConnectException;
+
+
+    void deleteFastDfsPv(String fields) throws RedisConnectException;
 }

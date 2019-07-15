@@ -55,6 +55,10 @@ public interface RedisService {
      */
     String set(String key, String value) throws RedisConnectException;
 
+    Long incr(String key, long liveTime) throws RedisConnectException;
+
+    Long incr(String key) throws RedisConnectException;
+
     /**
      * set 命令
      *
@@ -136,4 +140,12 @@ public interface RedisService {
      * @return Long
      */
     Long zrem(String key, String... members) throws RedisConnectException;
+
+    Long hset(String key, String field, String value) throws RedisConnectException;
+
+    String hget(String key, String field) throws RedisConnectException;
+
+    Map<String, String> hgetAll(String key) throws RedisConnectException;
+
+    void hdel(String ossFilePvCachePrefix, String fields) throws RedisConnectException;
 }

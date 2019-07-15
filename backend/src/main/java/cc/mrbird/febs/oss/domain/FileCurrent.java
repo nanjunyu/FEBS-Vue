@@ -1,5 +1,7 @@
 package cc.mrbird.febs.oss.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -17,8 +19,7 @@ import java.time.LocalDateTime;
 @TableName("t_file_current")
 public class FileCurrent implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
 

@@ -16,4 +16,6 @@ public interface FileCurrentMapper extends BaseMapper<FileCurrent> {
 
     List<FileCurrent> findFileCurrentPage(Map<String,Object> map);
     int findFileCurrentCount(Map<String,Object> map);
+
+
 }

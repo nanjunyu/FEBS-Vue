@@ -18,7 +18,12 @@ public class FebsConstant {
 
 
     // 附件缓存前缀
-    public static final String OSS_CACHE_PREFIX = "oss.cache.upload:";
+    public static final String OSS_FILE_URL_CACHE_PREFIX = "oss.cache.File.Url:";
+
+    // 附件缓存前缀
+    public static final String OSS_FILE_PV_CACHE_PREFIX = "oss.cache.File.Pv:";
+
+
     // 存储在线用户的 zset前缀
     public static final String ACTIVE_USERS_ZSET_PREFIX = "febs.user.active";
 
