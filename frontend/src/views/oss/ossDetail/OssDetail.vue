@@ -117,6 +117,9 @@
         },{
           title: '上传人',
           dataIndex: 'author'
+        },{
+          title: '访问量',
+          dataIndex: 'pv'
         }, {
           title: '操作',
           key:'action',
@@ -157,7 +160,8 @@
         }else if(HOST == 'prod'){
           // routerParams.fileUrl = 'http://www.invs.com/'+ routerParams.fileUrl
         }else if(HOST == 'dev'){
-          routerParams.fileUrl = 'http://127.0.0.1/'+ routerParams.fileUrl
+          // routerParams.fileUrl = 'http://127.0.0.1/'+ routerParams.fileUrl
+          routerParams.fileUrl = 'http://10.137.37.68/'+ routerParams.fileUrl
         }
         this.fileName = routerParams.fileName;
         this.fileUrl = routerParams.fileUrl;

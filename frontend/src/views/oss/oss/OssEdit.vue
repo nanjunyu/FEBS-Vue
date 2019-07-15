@@ -128,9 +128,10 @@
         if(HOST == 'test'){
           user.fastPath = 'http://10.137.35.134/'+ user.fastPath
         }else if(HOST == 'prod'){
-          user.fastPath = 'http://www.invs.com/'+ user.fastPath
+          // user.fastPath = 'http://www.invs.com/'+ user.fastPath
         }else if(HOST == 'dev'){
-          user.fastPath = 'http://127.0.0.1/'+ user.fastPath
+          // user.fastPath = 'http://127.0.0.1/'+ user.fastPath
+          user.fastPath = 'http://10.137.35.134/'+ user.fastPath
         }
         this.fileList = [{
           name:user.fastPath,
