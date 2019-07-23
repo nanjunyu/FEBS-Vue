@@ -54,7 +54,7 @@ public class UserController extends BaseController {
     public User detail(@NotBlank(message = "{required}") @PathVariable String username) {
         User user = userService.findByName(username);
         Map<String, Object> map = fileHistoryMapper.sysFileInfo(user.getUserId());
-        user.setFileNum(Integer.parseInt(map.get("totalNum").toString()));
+        user.setTotalFileNum(Integer.parseInt(map.get("totalNum").toString()));
         user.setTotalFileSize(map.get("totalSize").toString());
         return user;
     }

@@ -62,7 +62,7 @@ public class DashBoardController {
             map.put("startTime", startTime);
         }
         if (!StringUtils.isEmpty(endTime)) {
-            map.put("startTime", endTime);
+            map.put("endTime", endTime);
         }
         if (!StringUtils.isEmpty(fileName)) {
             map.put("fileName", fileName);

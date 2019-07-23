@@ -71,7 +71,7 @@
         where t.user_id=#{userId}
         and t.create_time between #{startTime} and #{endTime}
         <if test="fileName != null and fileName != ''">
-            and t.file_name like CONCAT(CONCAT('%', #{channelId}),'%')
+            and t.file_name like CONCAT(CONCAT('%', #{fileName}),'%')
         </if>
         GROUP BY t.file_id
     </select>

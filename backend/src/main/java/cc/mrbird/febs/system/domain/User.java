@@ -111,7 +111,7 @@ public class User implements Serializable {
     private String sysLeader;
 
     @TableField(exist = false)
-    private Integer fileNum;
+    private Integer totalFileNum;
 
     @TableField(exist = false)
     private String totalFileSize;

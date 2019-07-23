@@ -23,7 +23,7 @@ import java.util.Scanner;
 public class CodeGenerator {
 
     // 数据库 URL
-    private static final String URL = "jdbc:mysql://10.137.35.135:3306/oss?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private static final String URL = "jdbc:mysql://10.137.35.135:3306/sweettobuy?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     // 数据库驱动
     private static final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
     // 数据库用户名
@@ -35,11 +35,11 @@ public class CodeGenerator {
     // 包的基础路径
     private static final String BASE_PACKAGE_URL = "cc.mrbird.febs";
     // xml文件路径
-    private static final String XML_PACKAGE_URL = "/src/main/resources/domain/";
+   // private static final String XML_PACKAGE_URL = "/src/main/resources/domain/";
     // xml 文件模板
-    private static final String XML_MAPPER_TEMPLATE_PATH = "generator/templates/domain.xml";
+    //private static final String XML_MAPPER_TEMPLATE_PATH = "generator/templates/domain.xml";
     // domain 文件模板
-    private static final String MAPPER_TEMPLATE_PATH = "generator/templates/domain.java";
+   // private static final String MAPPER_TEMPLATE_PATH = "generator/templates/domain.java";
     // entity 文件模板
     private static final String ENTITY_TEMPLATE_PATH = "generator/templates/entity.java";
     // service 文件模板
@@ -77,8 +77,8 @@ public class CodeGenerator {
 
         // 配置自定义代码模板
         TemplateConfig templateConfig = new TemplateConfig();
-        templateConfig.setXml(XML_MAPPER_TEMPLATE_PATH);
-        templateConfig.setMapper(MAPPER_TEMPLATE_PATH);
+        //templateConfig.setXml(XML_MAPPER_TEMPLATE_PATH);
+        //templateConfig.setMapper(MAPPER_TEMPLATE_PATH);
         templateConfig.setEntity(ENTITY_TEMPLATE_PATH);
         templateConfig.setService(SERVICE_TEMPLATE_PATH);
         templateConfig.setServiceImpl(SERVICE_IMPL_TEMPLATE_PATH);
