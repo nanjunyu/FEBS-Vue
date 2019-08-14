@@ -139,7 +139,7 @@
         formData.append('fileName',this.fileName);
         formData.append('file',fileList[0]);
         formData.append('status',this.status);
-        formData.append('userId',JSON.parse(localStorage.getItem('USER')).userId);
+        // formData.append('userId',JSON.parse(localStorage.getItem('USER')).userId);
         formData.append('versionNumber','1.0');
         this.$upload('/oss/upload', formData).then((r) => {
           that.reset()

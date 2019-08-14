@@ -126,12 +126,12 @@
         }
         let HOST = process.env.HOST;
         if(HOST == 'test'){
-          user.fastPath = 'http://10.137.35.134/'+ user.fastPath
+          user.fastPath = 'http://10.137.37.68/'+ user.fastPath
         }else if(HOST == 'prod'){
           // user.fastPath = 'http://www.invs.com/'+ user.fastPath
         }else if(HOST == 'dev'){
           // user.fastPath = 'http://127.0.0.1/'+ user.fastPath
-          user.fastPath = 'http://10.137.35.134/'+ user.fastPath
+          user.fastPath = 'http://10.137.37.68/'+ user.fastPath
         }
         this.fileList = [{
           name:user.fastPath,
@@ -141,7 +141,15 @@
         this.uid = user.fileId
       },
       handleSubmit () {
-        if(this.fileName == this.oldFileName && this.status == this.oldStatus && this.uid != this.fileList[0].id){
+        if(this.fileName == ''){
+          alert('请输入文件名称');
+          return false;
+        }
+        if(this.fileList.length == 0){
+          alert('请上传文件');
+          return false;
+        }
+        if(this.fileName == this.oldFileName && this.status == this.oldStatus && this.uid == this.fileList[0].uid){
           this.$emit('close')
         }else{
           let that = this
@@ -151,10 +159,18 @@
           this.$get('/oss/getById', {
             ...params
           }).then((r) => {
+            if(this.fileName == ''){
+              alert('请输入文件名称');
+              return false;
+            }
+            if(this.fileList.length == 0){
+              alert('请上传文件');
+              return false;
+            }
             let formData = new FormData();
             formData.append('fileName',this.fileName);
             formData.append('status',this.status);
-            if(this.fileName == this.oldFileName && this.status != this.oldStatus && this.uid != this.fileList[0].id){
+            if(this.fileName == this.oldFileName && this.status != this.oldStatus && this.uid == this.fileList[0].uid){
               formData.append('versionNumber',r.data.maxVersion);
             }else{
               formData.append('versionNumber',(r.data.maxVersion*10 + 1)/10);
@@ -163,7 +179,7 @@
             if(this.parentId){
               formData.append('parentId',this.parentId);    // 如果有父id，则传父id
             }
-            if(this.uid != this.fileList[0].id){
+            if(this.uid != this.fileList[0].uid){
               formData.append('file',this.fileList[0]);
             }
             this.$upload2('/oss/updateFile', formData).then((r) => {

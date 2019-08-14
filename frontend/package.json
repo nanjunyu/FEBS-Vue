@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "test":"webpack-dev-server --inline --progress --config build/webpack.test.conf.js",
+    "test": "webpack-dev-server --inline --progress --config build/webpack.test.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js"
   },
@@ -16,6 +16,7 @@
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
     "date-fns": "^1.29.0",
+    "echarts": "^4.2.1",
     "enquire.js": "^2.1.6",
     "vue": "^2.5.17",
     "vue-apexcharts": "^1.2.7",

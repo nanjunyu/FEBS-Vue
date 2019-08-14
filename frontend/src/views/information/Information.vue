@@ -1,65 +1,71 @@
 <template>
-  <a-form :form="form">
-    <a-form-item
-      :label-col="formItemLayout.labelCol"
-      :wrapper-col="formItemLayout.wrapperCol"
-      label="系统名称"
-    >
-      <a-input
-        v-decorator="[
+  <div>
+    <a-form :form="form">
+      <a-form-item
+        :label-col="formItemLayout.labelCol"
+        :wrapper-col="formItemLayout.wrapperCol"
+        label="系统名称"
+      >
+        <a-input
+          v-decorator="[
           'sysName',
           {rules: [{ required: true,message:'请输入系统名称'}]}
         ]"
-      />
-    </a-form-item>
-    <a-form-item
-      :label-col="formItemLayout.labelCol"
-      :wrapper-col="formItemLayout.wrapperCol"
-      label="系统域名"
-    >
-      <a-input
-        v-decorator="[
+        />
+      </a-form-item>
+      <a-form-item
+        :label-col="formItemLayout.labelCol"
+        :wrapper-col="formItemLayout.wrapperCol"
+        label="系统域名"
+      >
+        <a-input
+          v-decorator="[
           'sysDomain',
           {rules: [{ required: true,message:'请输入系统域名'}]}
         ]"
-      />
-    </a-form-item>
-    <a-form-item
-      :label-col="formItemLayout.labelCol"
-      :wrapper-col="formItemLayout.wrapperCol"
-      label="负责人"
-    >
-      <a-input
-        v-decorator="[
+        />
+      </a-form-item>
+      <a-form-item
+        :label-col="formItemLayout.labelCol"
+        :wrapper-col="formItemLayout.wrapperCol"
+        label="负责人"
+      >
+        <a-input
+          v-decorator="[
           'sysLeader',
           {rules: [{ required: true,message:'请输入负责人'}]}
         ]"
-      />
-    </a-form-item>
-    <a-form-item
-      :label-col="formItemLayout.labelCol"
-      :wrapper-col="formItemLayout.wrapperCol"
-      label="联系电话"
-    >
-      <a-input
-        v-decorator="[
+        />
+      </a-form-item>
+      <a-form-item
+        :label-col="formItemLayout.labelCol"
+        :wrapper-col="formItemLayout.wrapperCol"
+        label="联系电话"
+      >
+        <a-input
+          v-decorator="[
           'mobile',
           {rules: [{ required: true,message:'请输入联系电话'}]}
         ]"
-      />
-    </a-form-item>
-    <a-form-item
-      :label-col="formTailLayout.labelCol"
-      :wrapper-col="formTailLayout.wrapperCol"
-    >
-      <a-button
-        type="primary"
-        @click="check"
+        />
+      </a-form-item>
+      <a-form-item
+        :label-col="formTailLayout.labelCol"
+        :wrapper-col="formTailLayout.wrapperCol"
       >
-        提交
-      </a-button>
-    </a-form-item>
-  </a-form>
+        <a-button
+          type="primary"
+          @click="check"
+        >
+          提交
+        </a-button>
+      </a-form-item>
+    </a-form>
+    <div style="margin-top: 100px">
+      <div style="padding-left: 90px;"><span>文件总个数：</span><span v-text="totalFileNum"></span></div>
+      <div style="padding-left: 90px;margin-top: 10px;"><span>文件总大小：</span><span v-text="totalFileSize"></span></div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -78,7 +84,9 @@
         formItemLayout,
         formTailLayout,
         form: this.$form.createForm(this),
-        userId:''
+        userId:'',
+        totalFileNum:'',
+        totalFileSize:''
       };
     },
     methods: {
@@ -112,9 +120,12 @@
     mounted(){
       let userName = JSON.parse(localStorage.getItem('USER')).username;
       this.$get('user/'+userName, {}).then((r) => {
+        console.log(r);
         let data = r.data
-        this.form.setFieldsValue(data)
+        this.form.setFieldsValue(data);
         this.userId = data.userId;
+        this.totalFileNum = data.totalFileNum;
+        this.totalFileSize = data.totalFileSize;
         // 数据加载完毕，关闭loading
         this.loading = false
       })

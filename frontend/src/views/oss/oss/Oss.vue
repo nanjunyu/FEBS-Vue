@@ -222,7 +222,7 @@
           params.pageSize = this.pagination.defaultPageSize
           params.pageNum = this.pagination.defaultCurrent
         }
-        params.userId = JSON.parse(localStorage.getItem('USER')).userId;
+        // params.userId = JSON.parse(localStorage.getItem('USER')).userId;
         this.$get('/oss/page', {
           ...params
         }).then((r) => {
