@@ -3,6 +3,7 @@ package cc.mrbird.febs.system.domain;
 import cc.mrbird.febs.common.converter.TimeConverter;
 import cc.mrbird.febs.common.domain.RegexpConstant;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.wuwenze.poi.annotation.Excel;
@@ -105,9 +106,15 @@ public class User implements Serializable {
 
     private transient String id;
 
-    private  String sysName;
+    private String sysName;
     private String sysDomain;
     private String sysLeader;
+
+    @TableField(exist = false)
+    private Integer totalFileNum;
+
+    @TableField(exist = false)
+    private String totalFileSize;
 
     /**
      * shiro-redis v3.1.0 必须要有 getAuthCacheKey()或者 getId()方法

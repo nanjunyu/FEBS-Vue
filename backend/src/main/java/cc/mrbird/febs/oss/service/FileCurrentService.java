@@ -19,4 +19,14 @@ public interface FileCurrentService extends IService<FileCurrent> {
      * @Date Create in  2019/6/18 14:19
      */
     IPage<FileCurrent> findFileCurrentPage(User user, QueryRequest request);
+
+    /**
+     * 获取主文件列表管理员
+     *
+     * @param
+     * @return
+     * @Author Frank
+     * @Date Create in  2019/6/18 14:19
+     */
+    IPage<FileCurrent> findFileCurrentPage(QueryRequest request);
 }

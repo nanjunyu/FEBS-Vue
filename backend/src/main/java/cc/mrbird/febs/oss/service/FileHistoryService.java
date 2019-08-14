@@ -1,6 +1,7 @@
 package cc.mrbird.febs.oss.service;
 
 import cc.mrbird.febs.common.domain.QueryRequest;
+import cc.mrbird.febs.common.exception.RedisConnectException;
 import cc.mrbird.febs.oss.domain.FileHistory;
 import cc.mrbird.febs.oss.domain.UploadInfo;
 import cc.mrbird.febs.oss.domain.UploadVo;
@@ -23,17 +24,8 @@ public interface FileHistoryService extends IService<FileHistory> {
      * @Author Frank
      * @Date Create in  2019/6/18 14:28
      */
-    void setPresent(Long id, User user);
+    void setPresent(Long id, User user) throws Exception;
 
-    /**
-     * 保存上传附件信息到数据库和redis
-     *
-     * @param
-     * @return
-     * @Author Frank
-     * @Date Create in  2019/5/27 10:24
-     */
-    void saveUpload(FileHistory fileHistory) throws Exception;
 
     IPage<?> findSysInfoPageByParentId(String parentId, String userId, QueryRequest queryRequest);
 
@@ -80,4 +72,11 @@ public interface FileHistoryService extends IService<FileHistory> {
      * @Date Create in  2019/6/19 14:35
      */
     UploadInfo uploadFile(MultipartFile file, UploadVo uploadVo, User user) throws Exception;
+
+
+    String  findMasterFastUrlByFileId(String fileId) throws Exception;
+
+    Long increaseFilePv(String fileId) throws Exception;
+
+    void getAllFastPv() throws RedisConnectException;
 }

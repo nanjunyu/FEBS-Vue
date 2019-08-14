@@ -24,10 +24,10 @@
     fast_path, file_id, version_number, author, pv, md5
   </sql>
 
-    <select id="findSysInfoPage" resultMap="BaseResultMap" parameterType="java.util.Map">
+    <select id="findFileCurrentPage" resultMap="BaseResultMap" parameterType="java.util.Map">
         select
         <include refid="Base_Column_List"/>
-        from t_file_current where parent_id is null
+        from t_file_current where 1=1
         <if test="userId != null and userId != ''">
             and user_id=#{userId}
         </if>
@@ -35,8 +35,8 @@
         limit #{pageStart} , #{pageSize}
     </select>
 
-    <select id="findSysInfoCount" parameterType="java.util.Map" resultType="java.lang.Integer">
-        select count(1) from t_file_current where parent_id is null
+    <select id="findFileCurrentCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(1) from t_file_current where 1=1
         <if test="userId != null and userId != ''">
             and user_id=#{userId}
         </if>

@@ -4,7 +4,9 @@ import cc.mrbird.febs.common.annotation.Log;
 import cc.mrbird.febs.common.controller.BaseController;
 import cc.mrbird.febs.common.domain.QueryRequest;
 import cc.mrbird.febs.common.exception.FebsException;
+import cc.mrbird.febs.common.utils.FebsUtil;
 import cc.mrbird.febs.common.utils.MD5Util;
+import cc.mrbird.febs.oss.dao.FileHistoryMapper;
 import cc.mrbird.febs.system.domain.User;
 import cc.mrbird.febs.system.domain.UserConfig;
 import cc.mrbird.febs.system.domain.UserInfo;
@@ -12,6 +14,8 @@ import cc.mrbird.febs.system.service.UserConfigService;
 import cc.mrbird.febs.system.service.UserService;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.wuwenze.poi.ExcelKit;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -28,6 +32,7 @@ import java.util.Map;
 @Slf4j
 @Validated
 @RestController
+@Api(tags = "用户相关API")
 @RequestMapping("user")
 public class UserController extends BaseController {
 
@@ -37,6 +42,8 @@ public class UserController extends BaseController {
     private UserService userService;
     @Autowired
     private UserConfigService userConfigService;
+    @Autowired
+    private FileHistoryMapper fileHistoryMapper;
 
     @GetMapping("check/{username}")
     public boolean checkUserName(@NotBlank(message = "{required}") @PathVariable String username) {
@@ -45,7 +52,11 @@ public class UserController extends BaseController {
 
     @GetMapping("/{username}")
     public User detail(@NotBlank(message = "{required}") @PathVariable String username) {
-        return this.userService.findByName(username);
+        User user = userService.findByName(username);
+        Map<String, Object> map = fileHistoryMapper.sysFileInfo(user.getUserId());
+        user.setTotalFileNum(Integer.parseInt(map.get("totalNum").toString()));
+        user.setTotalFileSize(map.get("totalSize").toString());
+        return user;
     }
 
     @GetMapping
@@ -105,9 +116,21 @@ public class UserController extends BaseController {
         }
     }
 
+
+    /**
+     * 系统信息提交
+     *
+     * @param
+     * @return
+     * @Author Frank
+     * @Date Create in  2019/6/20 13:58
+     */
     @PutMapping("sysInfo")
+    @ApiOperation(value = "系统信息提交", notes = "系统信息提交")
     public void updateSysInfo(@Valid UserInfo userInfo) throws FebsException {
         try {
+            User user = FebsUtil.getCurrentUser();
+            userInfo.setUserId(user.getUserId());
             this.userService.updateSysInfo(userInfo);
         } catch (Exception e) {
             message = "修改系统信息失败";

@@ -3,15 +3,17 @@ package cc.mrbird.febs.system.domain;
 import cc.mrbird.febs.common.domain.RegexpConstant;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Data
-public class UserInfo implements Serializable {
+public class    UserInfo implements Serializable {
 
     private static final long serialVersionUID = -4852732617765810959L;
 
@@ -25,17 +27,21 @@ public class UserInfo implements Serializable {
     private String username;
 */
 
-    @NotBlank(message = "{required}")
+    @NotNull(message = "系统名称名称不能为空！")
+    @ApiModelProperty(value="系统名称",name="sysName",required=true,example="系统名称")
     private String sysName;
 
-    @NotBlank(message = "{required}")
+    @NotNull(message = "系统名域名不能为空！")
+    @ApiModelProperty(value="系统域名",name="sysDomain",required=true,example="系统域名")
     private String sysDomain;
 
-    @NotBlank(message = "{required}")
+    @NotNull(message = "系统负责人不能为空！")
+    @ApiModelProperty(value="系统负责人",name="sysLeader",required=true,example="系统负责人")
     private String sysLeader;
 
     @Pattern(regexp = RegexpConstant.MOBILE_REG, message = "{mobile}")
-    @NotBlank(message = "{required}")
+    @NotNull(message = "手机号不能为空！")
+    @ApiModelProperty(value="手机号",name="mobile",required=true,example="手机号")
     private String mobile;
 
     /**
